@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using Exiled.API.Features.Roles;
 using Exiled.CustomRoles.API.Features;
@@ -40,6 +41,14 @@ namespace KibsAdminEvents.Scp173Tag
                 }
 
                 item.Position = Door.Get(Exiled.API.Enums.DoorType.Scp049Armory).Position + new UnityEngine.Vector3(0, 1, 0);
+
+            }
+            if (!picked)
+            {
+                Exiled.API.Features.Player player = Exiled.API.Features.Player.List.GetRandomValue();
+                player.Role.Set(PlayerRoles.RoleTypeId.Scp939);
+                player.EnableEffect(Exiled.API.Enums.EffectType.Ensnared, 1, 0, false);
+                player.Position = Door.Get(Exiled.API.Enums.DoorType.Scp049Armory).Position + new UnityEngine.Vector3(0, 1, 0);
 
             }
 
