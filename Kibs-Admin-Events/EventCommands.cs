@@ -54,34 +54,54 @@ namespace EventCommands
 
             foreach (var item in Globals.events)
             {
-                evs += item + " ";
+                evs += item;
+                if (item != Globals.events.Last())
+                {
+                    evs += ", ";
+                }
             }
 
             Player player = Player.Get(sender);
 
             if (player.CheckPermission("KibsAE.TriggerEvents")) {
                 if (arguments.Count > 0) {
-                    if (Globals.events.Contains(arguments.First())) {
-                        if(Round.InProgress)
+                    if (arguments.First() == "Cancel")
+                    {
+                    if (Globals.IncomingEvent == null)
                         {
-                            response = arguments.First() + " event will happen next round";
+                            response = "There is no event to cancel";
                         }
                         else
                         {
-                            response = arguments.First() + " event will happen this round";
+                            response = Globals.IncomingEvent + " event was cancelled";
+                            Globals.IncomingEvent = null;
                         }
-                        Globals.IncomingEvent = arguments.First();
-
                     }
                     else
                     {
-                        response = "Inavlid event name, event names are: " + evs;
+                        if (Globals.events.Contains(arguments.First()))
+                        {
+                            if (Round.InProgress)
+                            {
+                                response = arguments.First() + " event will happen next round";
+                            }
+                            else
+                            {
+                                response = arguments.First() + " event will happen this round";
+                            }
+                            Globals.IncomingEvent = arguments.First();
+
+                        }
+                        else
+                        {
+                            response = "Inavlid event name, event names are: " + evs;
+                        }
                     }
                    
                 }
                 else
                 {
-                    response = "You need to specify an event, events are: " + evs;
+                    response = "You need to specify an event, events are: " + evs + " or type cancel to cancel in incoming event";
                 }
                     }
 
