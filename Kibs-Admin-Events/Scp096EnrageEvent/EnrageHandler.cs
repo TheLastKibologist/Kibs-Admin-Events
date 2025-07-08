@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Exiled.API.Features.Roles;
 using MEC;
 using System;
@@ -16,6 +17,7 @@ namespace KibsAdminEvents.EnrageEvent
 
         public static void EventStart()
         {
+            Player scp = null;
             bool picked = false;
             foreach (var item in Player.List)
             {
@@ -38,7 +40,7 @@ namespace KibsAdminEvents.EnrageEvent
             }
         }
             public static IEnumerator<float> enrager(Exiled.API.Features.Roles.Scp096Role scp096) { 
-            while (!Round.IsLobby)
+            while (Globals.CurrentEvent == "096Apollyon")
             {
                 foreach (var item in Player.List)
                 {

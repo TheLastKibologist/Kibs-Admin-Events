@@ -12,6 +12,7 @@ using Exiled.Events.EventArgs.Scp173;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Events.Handlers;
 using KibsAdminEvents.EveryonesArmed;
+using KibsAdminEvents.RedLightGreenLight;
 using KibsAdminEvents.Scp173Tag;
 using KibsAdminEvents.Skeleblackout;
 using KibsAdminEvents.SpeedUpEvent;
@@ -34,7 +35,7 @@ namespace KibsAdminEvents
         
         public static string CurrentEvent = null;
         public static string IncomingEvent = null;
-        public static string[] events = { "SpeedUp" , "096Apollyon", "Skinwalker", "PeanutDodge" , "LeapFrog" , "GunsAndGlowsticks" };
+        public static string[] events = { "SpeedUp" , "096Apollyon", "Skinwalker", "PeanutDodge" , "LeapFrog" , "GunsAndGlowsticks" , "RedLightGreenLight"};
         public static List<Exiled.API.Features.Player> hidden = null;
     }
     public class Class1 : Plugin<Config>
@@ -56,6 +57,7 @@ namespace KibsAdminEvents
             Exiled.Events.Handlers.Player.ActivatingGenerator += Generator.OnActivatingGenerator;
             Exiled.Events.Handlers.Player.ChangingRole += RoundStart.OnRoleChanged;
             Exiled.Events.Handlers.Player.Died += RoundStart.OnDeath;
+            Exiled.Events.Handlers.Player.InteractingDoor += RoundStart.OnDoorInteract;
 
             Exiled.Events.Handlers.Scp173.BeingObserved += RoundStart.BeingWatched;
 
@@ -75,6 +77,7 @@ namespace KibsAdminEvents
             Exiled.Events.Handlers.Player.ActivatingGenerator -= Generator.OnActivatingGenerator;
             Exiled.Events.Handlers.Player.ChangingRole -= RoundStart.OnRoleChanged;
             Exiled.Events.Handlers.Player.Died -= RoundStart.OnDeath;
+            Exiled.Events.Handlers.Player.InteractingDoor -= RoundStart.OnDoorInteract;
 
 
             Exiled.Events.Handlers.Scp173.BeingObserved -= RoundStart.BeingWatched;
@@ -128,6 +131,19 @@ namespace KibsAdminEvents
 
         public static class RoundStart
         {
+            public static void OnDoorInteract(InteractingDoorEventArgs ev) {
+                if (Globals.CurrentEvent == "RedLightGreenLight")
+                {   if (ev.Door.Type == DoorType.SurfaceGate)
+                    {
+                        ev.IsAllowed = false;
+
+                        if (ev.Player.Role == RoleTypeId.ClassD)
+                        {
+                            ev.Player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
+                        }
+                    }
+                }
+            }
             public static void OnDeath(DiedEventArgs ev)
             {
                 if(Globals.CurrentEvent == "LeapFrog")
@@ -160,40 +176,7 @@ namespace KibsAdminEvents
                 if (Globals.IncomingEvent != null) { 
                 Globals.CurrentEvent = Globals.IncomingEvent;
                 Globals.IncomingEvent = null;
-                    switch (Globals.CurrentEvent)
-                    {
-                        default:
-
-                            break;
-
-                        case "SpeedUp":
-
-                            SpeedUpHandler.SpeedUp();
-                            break;
-
-                        case "096Apollyon":
-                            EnrageEvent.EnrageHandler.EventStart();
-                            break;
-
-                        case "Skinwalker":
-                            SkinwalkerEventHandler.EventStarted();
-                            break;
-
-                        case "TheHide":
-                            TheHideEvents.HideRoundStart();
-                            break;
-                        case "PeanutDodge":
-                            PeanutDodge.EventStarted();
-                            break;
-
-                        case "LeapFrog":
-                            LeapFrogManager.EventStarted();
-                            break;
-
-                        case "GunsAndGlowsticks":
-                            ScpsWithGunsHandler.EventStarted();
-                            break;
-                    }
+                    EventLoader();
                 }
                 else
                 {
@@ -202,11 +185,51 @@ namespace KibsAdminEvents
                 }
 
 
-
+              
 
 
             }
+            public static void EventLoader()
+            {
+                switch (Globals.CurrentEvent)
+                {
+                    default:
 
+                        break;
+
+                    case "SpeedUp":
+
+                        SpeedUpHandler.SpeedUp();
+                        break;
+
+                    case "096Apollyon":
+                        EnrageEvent.EnrageHandler.EventStart();
+                        break;
+
+                    case "Skinwalker":
+                        SkinwalkerEventHandler.EventStarted();
+                        break;
+
+                    case "TheHide":
+                        TheHideEvents.HideRoundStart();
+                        break;
+                    case "PeanutDodge":
+                        PeanutDodge.EventStarted();
+                        break;
+
+                    case "LeapFrog":
+                        LeapFrogManager.EventStarted();
+                        break;
+
+                    case "GunsAndGlowsticks":
+                        ScpsWithGunsHandler.EventStarted();
+                        break;
+
+                    case "RedLightGreenLight":
+                        RLGLHandler.EventTriger();
+                        break;
+                }
+            }
             // todo: scps with guns and everyone else with jailbirds, 939 lunge only but dead ppl also become 939
             }
         }

@@ -23,9 +23,7 @@ namespace KibsAdminEvents.Skeleblackout
                 if (item.IsScp)
                 {
                     item.Role.Set(RoleTypeId.Scp3114, spawnFlags: RoleSpawnFlags.AssignInventory);
-                    foreach (var item1 in item.CurrentRoom.Doors)
-                    {
-                    }
+                    item.Position = Room.Get(Exiled.API.Enums.RoomType.Hcz127).Position + new UnityEngine.Vector3(0, 1, 0);
                 }
                 else
                 {

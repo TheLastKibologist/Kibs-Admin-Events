@@ -20,7 +20,7 @@ namespace KibsAdminEvents.SpeedUpEvent
 
         public static IEnumerator<float> SpeedBooster()
         {
-            while (!Round.IsLobby)
+            while (Globals.CurrentEvent == "SpeedUp")
             {
                 if (boost <= 180)
                 {

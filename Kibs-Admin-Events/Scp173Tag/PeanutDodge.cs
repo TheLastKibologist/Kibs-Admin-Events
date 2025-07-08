@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Exiled.API.Features.Roles;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.Handlers;
@@ -30,6 +31,14 @@ namespace KibsAdminEvents.Scp173Tag
                     item.Role.Set(PlayerRoles.RoleTypeId.ClassD);
                 }
                 item.Position = Room.Get(Exiled.API.Enums.RoomType.EzGateA).Position + new UnityEngine.Vector3(0, 1, 0);
+
+            }
+            if(!picked)
+            {
+                Exiled.API.Features.Player player = Exiled.API.Features.Player.List.GetRandomValue();
+                player.Role.Set(PlayerRoles.RoleTypeId.Scp173);
+                player.EnableEffect(Exiled.API.Enums.EffectType.Slowness, 60, 0, false);
+                player.Position = Room.Get(Exiled.API.Enums.RoomType.EzGateA).Position + new UnityEngine.Vector3(0, 1, 0);
 
             }
             foreach (var item in Room.Get(Exiled.API.Enums.RoomType.EzGateA).Doors)

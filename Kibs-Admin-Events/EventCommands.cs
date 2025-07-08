@@ -67,7 +67,7 @@ namespace EventCommands
                 if (arguments.Count > 0) {
                     if (arguments.First() == "Cancel")
                     {
-                    if (Globals.IncomingEvent == null)
+                        if (Globals.IncomingEvent == null)
                         {
                             response = "There is no event to cancel";
                         }
@@ -81,22 +81,42 @@ namespace EventCommands
                     {
                         if (Globals.events.Contains(arguments.First()))
                         {
-                            if (Round.InProgress)
+                            if (arguments.Count > 1)
                             {
-                                response = arguments.First() + " event will happen next round";
+                                if (arguments.Array[2] == "force")
+                                {
+
+                                    response = arguments.First() + " has been force activated";
+
+                                    Globals.CurrentEvent = arguments.First();
+                                    Class1.RoundStart.EventLoader();
+                                }
+                                else
+                                {
+                                    response = "Dont put any spaces please";
+                                }
                             }
                             else
                             {
-                                response = arguments.First() + " event will happen this round";
-                            }
-                            Globals.IncomingEvent = arguments.First();
 
+
+                                if (Round.InProgress)
+                                {
+                                    response = arguments.First() + " event will happen next round";
+                                }
+                                else
+                                {
+                                    response = arguments.First() + " event will happen this round";
+                                }
+                                Globals.IncomingEvent = arguments.First();
+
+                            }
                         }
                         else
                         {
                             response = "Inavlid event name, event names are: " + evs;
                         }
-                    }
+                        } 
                    
                 }
                 else

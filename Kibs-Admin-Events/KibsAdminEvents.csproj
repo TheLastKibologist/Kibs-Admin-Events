@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="EveryonesArmed\ScpsWithGunsHandler.cs" />
     <Compile Include="LeapFrogEvent\LeapFrogManager.cs" />
+    <Compile Include="RedLightGreenLight\RLGLHandler.cs" />
     <Compile Include="Scp096EnrageEvent\EnrageHandler.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Config.cs" />
