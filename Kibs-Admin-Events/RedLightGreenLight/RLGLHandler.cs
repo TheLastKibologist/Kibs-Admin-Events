@@ -33,10 +33,10 @@ namespace KibsAdminEvents.RedLightGreenLight
             }
             RedLight = false;
             firstick = true;
-            _LightChanger = Timing.RunCoroutine(SpeedBooster(4));
+            _LightChanger = Timing.RunCoroutine(SpeedBooster(Round.ElapsedTime.Add(new TimeSpan(0, 4,0))));
         }
 
-        public static IEnumerator<float> SpeedBooster(int minutes)
+        public static IEnumerator<float> SpeedBooster(TimeSpan timeSpan)
         {
             Color color = new Color(0, 0, 0);
             while (Globals.CurrentEvent == "RedLightGreenLight")
@@ -79,9 +79,9 @@ namespace KibsAdminEvents.RedLightGreenLight
                         RedLight = !RedLight;
                     }
                 }
-                TimeSpan time = new TimeSpan(0, minutes, 0).Subtract(Round.ElapsedTime);
+                TimeSpan time = timeSpan.Subtract(Round.ElapsedTime);
                 string text = null;
-                if (minutes > 0)
+                if (timeSpan.Minutes > 0)
                 {
                     text = time.Minutes + ":" + time.Seconds.ToString("D2");
                 }
